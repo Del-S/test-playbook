@@ -1,18 +1,19 @@
 ---
 - hosts: all
-  sudo: yes
-  sudo_user: del_s
+#  sudo: yes
+#  sudo_user: root
   vars:
     wordpress_wp_cli_install_dir: /usr/local/bin
+    wordpress_name: devel
     wordpress_installs:
     - name: devel
-      user: ansible
+      user: root
       dbname: w_devel
       dbuser: w_devel
       dbpass: 'password'
       dbhost: '127.0.0.1'
-      path: /srv/wordpress/sites/{{ wordpress_installs:name }}/root 
-      url: 'devel.${linux:network:fqdn}'
+      path: /srv/wordpress/sites/devel/root 
+      url: 'wordpress-ansible.com'
       title: 'Wordpress Ansible Page'
       admin_name: 'Del_S'
       admin_email: 'david@sucharda.cz'
@@ -24,6 +25,6 @@
       plugins: ['autoptimize', 'jetpack']
   tasks:
   - include: tasks/wp-cli.yml
-  #- include: tasks/core.yml
-  #- include: tasks/themes.yml
-  #- include: tasks/plugins.yml
+  - include: tasks/core.yml
+  - include: tasks/themes.yml
+  - include: tasks/plugins.yml

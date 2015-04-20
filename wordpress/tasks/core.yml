@@ -9,9 +9,7 @@
   tags: [configuration, wordpress, wordpress-core, wordpress-is-downloaded]
 
 - name: download wp files
-  shell: "wp core download"
-  args:
-    chdir: "{{ item.item.path }}"
+  shell: "wp core download --path={{ item.item.path }} "
   with_items: check_download.results
   when: wordpress_installs and item.rc != 0
   sudo: yes
