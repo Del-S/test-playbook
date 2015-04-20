@@ -12,8 +12,6 @@
   shell: "wp core download --path={{ item.item.path }} "
   with_items: check_download.results
   when: wordpress_installs and item.rc != 0
-  sudo: yes
-  sudo_user: "{{ item.item.user }}"
   tags: [configuration, wordpress, wordpress-core, wordpress-downloaded]
 
 - name: create wp-config
@@ -21,6 +19,8 @@
   args:
     creates: "{{ item.path }}/wp-config.php"
   with_items: wordpress_installs
+  sudo: yes
+  sudo_user: "{{ item.item.user }}"
   tags: [configuration, wordpress, wordpress-core, wordpress-configure]
 
 - name: check if database is already installed
