@@ -1,0 +1,5 @@
+#- include: defaults/main.yml
+- include: tasks/wp-cli.yml
+- include: tasks/core.yml
+- include: tasks/themes.yml
+- include: tasks/plugins.yml

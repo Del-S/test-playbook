@@ -1,0 +1,6 @@
+---
+# test file for wordpress
+- hosts: localhost
+  remote_user: root
+  roles:
+    - role: ansible-wordpress
