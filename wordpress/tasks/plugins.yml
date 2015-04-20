@@ -1,7 +1,7 @@
 - name: identify installation plugin
   shell: "wp --allow-root plugin is-installed {{ item.1 }}"
   args:
-    chdir: {{ item.0.path }}
+    chdir: "{{ item.0.path }}"
   register: check_installation_plugins
   failed_when: False
   changed_when: False
