@@ -9,15 +9,16 @@
   tags: [configuration, wordpress, wordpress-core, wordpress-is-downloaded]
 
 - name: download wp files
-  shell: "wp core download --path={{ item.item.path }} --allow-root "
+  shell: "wp core download --path={{ item.item.path }} --allow-root"
   with_items: check_download.results
   when: wordpress_installs and item.rc != 0
   tags: [configuration, wordpress, wordpress-core, wordpress-downloaded]
 
 - name: create wp-config
-  shell: "wp --allow-root --quiet --path='{{ item.path }}' core config --dbname='{{ item.dbname }}' --dbuser='{{ item.dbuser }}' --dbpass='{{ item.dbpass }}' --dbhost='{{ item.dbhost | default('localhost') }}'"
+  shell: "wp --allow-root --quiet core config --dbname='{{ item.dbname }}' --dbuser='{{ item.dbuser }}' --dbpass='{{ item.dbpass }}' --dbhost='{{ item.dbhost | default('localhost') }}'"
   args:
     creates: "{{ item.path }}/wp-config.php"
+    chdir: "{{ item.path }}"
   with_items: wordpress_installs
   sudo: yes
   sudo_user: "{{ item.item.user }}"

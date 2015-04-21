@@ -6,4 +6,6 @@
     owner: root
     group: root
     mode: 0755
+#  sudo: true
+#  sudo_user: root
   tags: [configuration, wordpress, wordpress-wp-cli, wordpress-wp-cli-install]
