@@ -9,7 +9,7 @@
     - wordpress_installs
     - plugins
   when: item.1
-  tags: [configuration, wordpress, wordpress-plugins, wordpress-is-installed-plugin]
+  tags: [configuration, wordpress, wordpress-plugins, wordpress-is-installed-plugin, wordpress-update, wordpress-update-plugin]
 
 - name: install plugin
   shell: "wp --path='{{ item.item.0.path }}' plugin install {{ item.item.1 }}"
@@ -30,4 +30,4 @@
   shell: "wp --path='{{ item.item.0.path }}' plugin update {{ item.item.1 }}"
   with_items: check_installation_plugins.results
   when: check_installation_plugins is defined and item.item.1 and item.rc == 0 and item.item.0.plugins_update == 1
-  tags: [configuration, wordpress, wordpress-plugins, wordpress-update-plugin]
+  tags: [configuration, wordpress, wordpress-plugins, wordpress-update, wordpress-update-plugin]

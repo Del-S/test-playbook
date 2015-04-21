@@ -7,7 +7,7 @@
     - wordpress_installs
     - themes
   when: item.1
-  tags: [configuration, wordpress, wordpress-themes, wordpress-is-installed-theme]
+  tags: [configuration, wordpress, wordpress-themes, wordpress-is-installed-theme, wordpress-update, wordpress-update-theme]
 
 - name: install (theme)
   shell: "wp --no-color --path='{{ item.item.0.path }}' theme install {{ item.item.1 }}"
@@ -28,5 +28,5 @@
   shell: "wp --no-color --path='{{ item.item.0.path }}' theme update {{ item.item.1 }}"
   with_items: check_installation_themes.results
   when: check_installation_themes is defined and item.item.1 and item.rc == 0 and themes_update == 1
-  tags: [configuration, wordpress, wordpress-themes, wordpress-update-theme]
+  tags: [configuration, wordpress, wordpress-themes, wordpress-update, wordpress-update-theme]
 

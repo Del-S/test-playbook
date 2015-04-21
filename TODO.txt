@@ -1,5 +1,4 @@
 Check: 
-- dir change (eliminate --path=)
 - user change (eliminate --allow-root)
 
 Maybe:

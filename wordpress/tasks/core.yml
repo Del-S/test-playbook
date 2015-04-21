@@ -26,7 +26,7 @@
   failed_when: False
   changed_when: False
   with_items: wordpress_installs
-  tags: [configuration, wordpress, wordpress-core, wordpress-is-installed]
+  tags: [configuration, wordpress, wordpress-core, wordpress-is-installed, wordpress-update, wordpress-update-core]
 
 - name: install wp database
   shell: "wp --path='{{ item.item.path }}' core install --url='{{ item.item.url }}' --title='{{ item.item.title }}' --admin_name='{{ item.item.admin_name | default('admin') }}' --admin_email='{{ item.item.admin_email }}' --admin_password='{{ item.item.admin_password }}'"
@@ -44,4 +44,4 @@
   shell: "wp --path='{{ item.item.path }}' core update"
   with_items: check_installation.results
   when: wordpress_installs and item.rc == 0 and item.item.core_update == 1
-  tags: [configuration, wordpress, wordpress-core, wordpress-update]
+  tags: [configuration, wordpress, wordpress-core, wordpress-update, wordpress-update-core]
