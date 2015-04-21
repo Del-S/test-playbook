@@ -1,5 +1,3 @@
-#- template: src=../files/apache.j2 dest=/etc/file.conf owner=bin group=wheel mode=0644
-
 - name: check if wp is downloaded
   shell: "ls {{ item.path }} | grep -q 'wp-'"
   register: check_download
@@ -15,17 +13,15 @@
   tags: [configuration, wordpress, wordpress-core, wordpress-downloaded]
 
 - name: create wp-config
-  shell: "wp --allow-root --quiet core config --dbname='{{ item.dbname }}' --dbuser='{{ item.dbuser }}' --dbpass='{{ item.dbpass }}' --dbhost='{{ item.dbhost | default('localhost') }}'"
+  shell: "wp core config --allow-root --quiet --path='{{ item.path }}' --dbname='{{ item.dbname }}' --dbuser='{{ item.dbuser }}' --dbpass='{{ item.dbpass }}' --dbhost='{{ item.dbhost | default('localhost') }}'"
   args:
     creates: "{{ item.path }}/wp-config.php"
     chdir: "{{ item.path }}"
   with_items: wordpress_installs
-  sudo: yes
-  sudo_user: "{{ item.item.user }}"
   tags: [configuration, wordpress, wordpress-core, wordpress-configure]
 
 - name: check if database is already installed
-  shell: "wp --allow-root --path='{{ item.path }}' core is-installed"
+  shell: "wp --path='{{ item.path }}' core is-installed"
   register: check_installation
   failed_when: False
   changed_when: False
@@ -33,19 +29,19 @@
   tags: [configuration, wordpress, wordpress-core, wordpress-is-installed]
 
 - name: install wp database
-  shell: "wp --allow-root --path='{{ item.item.path }}' core install --url='{{ item.item.url }}' --title='{{ item.item.title }}' --admin_name='{{ item.item.admin_name | default('admin') }}' --admin_email='{{ item.item.admin_email }}' --admin_password='{{ item.item.admin_password }}'"
+  shell: "wp --path='{{ item.item.path }}' core install --url='{{ item.item.url }}' --title='{{ item.item.title }}' --admin_name='{{ item.item.admin_name | default('admin') }}' --admin_email='{{ item.item.admin_email }}' --admin_password='{{ item.item.admin_password }}'"
   with_items: check_installation.results
   when: wordpress_installs and item.rc != 0
   tags: [configuration, wordpress, wordpress-core, wordpress-install]
 
 - name: check install
-  shell: "wp --allow-root --path='{{ item.path }}' core is-installed"
+  shell: "wp --path='{{ item.path }}' core is-installed"
   changed_when: False
   with_items: wordpress_installs
   tags: [configuration, wordpress, wordpress-core, wordpress-install-check]
   
 - name: update wp core
-  shell: "wp --allow-root --path='{{ item.item.path }}' core update"
+  shell: "wp --path='{{ item.item.path }}' core update"
   with_items: check_installation.results
   when: wordpress_installs and item.rc == 0 and item.item.core_update == 1
   tags: [configuration, wordpress, wordpress-core, wordpress-update]

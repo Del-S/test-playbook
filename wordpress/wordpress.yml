@@ -2,7 +2,6 @@
 - hosts: all
   vars:
     wordpress_wp_cli_install_dir: /usr/local/bin
-    wordpress_name: devel
     wordpress_installs:
     - name: devel
       user: ansible
@@ -10,7 +9,7 @@
       dbuser: w_devel
       dbpass: 'password'
       dbhost: '127.0.0.1'
-      path: "/srv/wordpress/sites/{{ wordpress_name }}/root" 
+      path: "/srv/wordpress/sites/{{ name }}/root" 
       url: 'wordpress-ansible.com'
       title: 'Wordpress Ansible Page'
       admin_name: 'Del_S'
@@ -21,6 +20,9 @@
       themes_update: false
       themes: []
       plugins: ['autoptimize', 'jetpack']
+  sudo: yes
+  sudo_user: "{{ item.user }}"
+  with_items: wordpress_installs
   tasks:
   - include: tasks/wp-cli.yml
   - include: tasks/core.yml
